@@ -38,7 +38,7 @@ int day_of_month(NgayThang date, int i)
 {
 	int NumDay;
 	
-	switch (i);
+	switch (i)
 	{
 		case 1:
 		case 3:
@@ -75,7 +75,7 @@ int STTday(NgayThang date)
 	int ngay = date.day;
 	for(int i = 1; i <= date.month - 1; i++)
 	{
-		ngay = ngay + day_of_month(date, i)
+		ngay = ngay + day_of_month(date, i);
 	}
 	return ngay;
 }
@@ -89,6 +89,7 @@ int main()
 	Laydmy(st, date);
 	if(KTyear(date) == 1 ) cout << date.year << " la nam nhuan.";
 	else cout << date.year << " khong phai nam nhuan.";
+	cout << "\nSTT ngay trong nam la: " << STTday(date);
 	
 }
 
