@@ -80,7 +80,29 @@ int STTday(NgayThang date)
 	return ngay;
 }
 
+NgayThang ngaytuSTT(int stt, int nam)
+{
+	
+}
 
+NgayThang CongNgayThang(NgayThang n, int x)
+{
+	int kq = x + STTday(n);
+	int nam = n.year;
+	if(kq <= 365) return ngaytuSTT(kq, nam)
+	else
+		if(KTyear(n) == 1)
+			if(kq == 366) 
+				return ngaytuSTT(kq, nam)
+			else 
+				return ngaytuSTT(kq - 366, nam + 1 );
+		else 
+			return ngaytuSTT(kq - 365, nam +1)	
+}
+void add(NgayThang date, int x)
+{
+	
+}
 int main()
 {
 	struct NgayThang date;
