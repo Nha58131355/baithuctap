@@ -80,12 +80,58 @@ int STTday(NgayThang date)
 	return ngay;
 }
 
-NgayThang ngaytuSTT(int stt, int nam)
+void STTSangNgay(NgayThang &b, int &n)
 {
-	
+	for(int i = n; n > 0; n -= day_of_month(b, b.month))
+		if(n > day_of_month(b, b.month))
+		{
+			b.month++;
+		}
+		else
+			if(n == day_of_month(b, b.month))
+			{
+				b.month++;
+				b.day = 1;
+				n = 0;
+			}
+			else{
+				b.day = n;
+				n = 0;
+			}
+	cout << b.day << "/" << b.month << "/" << b.year << endl;	
 }
 
-NgayThang CongNgayThang(NgayThang n, int x)
+void Cong(NgayThang a, int &x)
+{
+	
+	cout << "nhap so tu nhien duong: ";
+	cin >> x;
+	
+	int n = STTday(a) + x;
+	
+	NgayThang b;
+	b.year = a.year;
+	b.month = 1;
+	b.day = 0;
+	
+	while(n > 365)
+		for(n; n >= 366; n-=366)
+		{
+			if(KTyear(b) == 0)
+				n++;
+			b.year++; // xong nam
+		}
+	if(n == 365)
+	{
+		b.year++; // xong nam
+		b.day = 1; // xong ngay
+		b.month = 1; // xong thang
+	}
+	else
+		if(n < 365)
+			STTSangNgay(b, n); // xong ngay va thang
+}
+/*NgayThang CongNgayThang(NgayThang n, int x)
 {
 	int kq = x + STTday(n);
 	int nam = n.year;
@@ -102,7 +148,7 @@ NgayThang CongNgayThang(NgayThang n, int x)
 void add(NgayThang date, int x)
 {
 	
-}
+}*/
 int main()
 {
 	struct NgayThang date;
@@ -112,6 +158,8 @@ int main()
 	if(KTyear(date) == 1 ) cout << date.year << " la nam nhuan.";
 	else cout << date.year << " khong phai nam nhuan.";
 	cout << "\nSTT ngay trong nam la: " << STTday(date);
+	int c;
+	Cong(date,c);
 	
 }
 
