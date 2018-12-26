@@ -53,6 +53,7 @@ void NhapDB2(ifstream &filein, vector<Contact> &ds)
 
 void NhapDB3(Contact &danhba)
 {
+	cout<<"-------------------------------------------------------------"<<endl;
 	cout << "nhap ten: ";
 	cin.getline(danhba.ten,40);
 	cout << "nhap so dien thoai: ";
@@ -92,8 +93,10 @@ void LKDB()
 	filein.close();
 	
 	for(int i=0;i<dsdanhba.size();i++)
-	{cout<<"===========================STT: "<<i+1<<"==========================="<<endl;
-	XuatDB(dsdanhba[i]);}
+	{
+		cout<<"-------------------------------STT: "<<i+1<<"-------------------------------"<<endl;
+		XuatDB(dsdanhba[i]);
+	}
 }
 
 void themDB()
@@ -107,7 +110,7 @@ void themDB()
 	Contact tam;
 	NhapDB3(tam);
 	dsdanhba.push_back(tam);
-	 ofstream outfile;
+	ofstream outfile;
 	   outfile.open("danhba.dat");
 	for(int i=0;i<dsdanhba.size();i++)
 	{
@@ -120,6 +123,7 @@ void themDB()
 			outfile<<dsdanhba[i].dc<<endl;
 			outfile<<dsdanhba[i].gt;
 	}
+	cout<<"Them thanh cong"<<endl;
 }
 
 void suaDB()
@@ -132,7 +136,7 @@ void suaDB()
 	
 	int vt;
 	fflush(stdin);
-	cout<<"Nhap vao vi tri ban ghi"<<endl;
+	cout<<"Nhap vao vi tri ban ghi: "<<endl;
 	cin>>vt;
 	vt--;
 	fflush(stdin);
@@ -150,19 +154,78 @@ void suaDB()
 		ofstream outfile;
 		   outfile.open("danhba.dat");
 		for(int i=0;i<dsdanhba.size();i++)
-		{if(i==0) outfile<<dsdanhba[i].ten<<endl;
+		{
+			if(i==0) 
+				outfile<<dsdanhba[i].ten<<endl;
+			else
+				outfile<<endl<<dsdanhba[i].ten<<endl;
+				outfile<<dsdanhba[i].sdt<<endl;
+				outfile<<dsdanhba[i].email<<endl;
+				outfile<<dsdanhba[i].dc<<endl;
+				outfile<<dsdanhba[i].gt;
+		}
+	}
+	cout<<"Sua thanh cong"<<endl;
+}
+
+void xoaDB()
+{
+	ifstream filein;
+	filein.open("danhba.dat",ios_base::in);
+	vector<Contact> dsdanhba;
+	NhapDB2(filein,dsdanhba);
+	filein.close();
+	
+	int vt;
+	fflush(stdin);
+	cout<<"Nhap vao vi tri ban ghi muon xoa: "<<endl;
+	cin>>vt;
+	fflush(stdin);
+	vt--;
+	dsdanhba.erase(dsdanhba.begin()+vt);
+	ofstream outfile;
+	   outfile.open("danhba.dat");
+	for(int i=0;i<dsdanhba.size();i++)
+	{
+		if(i==0) 
+			outfile<<dsdanhba[i].ten<<endl;
 		else
-		outfile<<endl<<dsdanhba[i].ten<<endl;
-		outfile<<dsdanhba[i].sdt<<endl;
-		outfile<<dsdanhba[i].email<<endl;
-		outfile<<dsdanhba[i].dc<<endl;
-		outfile<<dsdanhba[i].gt;
+			outfile<<endl<<dsdanhba[i].ten<<endl;
+			outfile<<dsdanhba[i].sdt<<endl;
+			outfile<<dsdanhba[i].email<<endl;
+			outfile<<dsdanhba[i].dc<<endl;
+			outfile<<dsdanhba[i].gt;
+	}
+	cout<<"Xoa thanh cong"<<endl;
+}
+
+void TimKiem()
+{
+	ifstream filein;
+	filein.open("danhba.dat",ios_base::in);
+	vector<Contact> dsdanhba;
+	NhapDB2(filein,dsdanhba);
+	filein.close();
+	
+	char temp2[255],*s;
+	printf("Nhap ten can tim kiem: ");
+	gets(temp2);
+	for(int i=0;i<dsdanhba.size();i++)
+	{
+		s=strstr(dsdanhba[i].ten,temp2);
+		if(s!=NULL) 
+		{
+			cout<<"===========================STT: "<<i+1<<"==========================="<<endl;
+			XuatDB(dsdanhba[i]);
 		}
 	}
 }
+
 int main()
 {
 	LKDB();
+	themDB();
 	suaDB();
-	
+	xoaDB();
+	TimKiem();
 }
