@@ -94,7 +94,8 @@ void STTSangNgay(NgayThang &b, int &n)
 				b.day = 1;
 				n = 0;
 			}
-			else{
+			else
+			{
 				b.day = n;
 				n = 0;
 			}
@@ -139,8 +140,8 @@ void Tru(NgayThang a, int &x)
 	
 	NgayThang b;
 	b.year = a.year;
-	b.month = 1;
-	b.day = 0;
+	b.month = a.month;
+	b.day = a.day;
 	
 	while(x >= 365)
 	{
@@ -169,7 +170,7 @@ void Tru(NgayThang a, int &x)
 	else
 	{
 		b.year--;
-		if(STTday(b) == true)
+		if(KTyear(b) == 1)
 			stt += 366;
 		else
 			stt += 365;
