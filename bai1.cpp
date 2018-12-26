@@ -7,7 +7,63 @@
 #include<time.h>
 #include<windows.h>
 #include <cstdlib>
+#include <iomanip>
+#include "console.h"
 using namespace std;
+//-------------------------------------------------------------------------------------------------------
+int inputKey()
+{
+	if (_kbhit())
+	{
+		int key = _getch();
+
+		if (key == 224)	// special key
+		{
+			key = _getch();
+			return key + 1000;
+		}
+
+		return key;
+	}
+	else
+	{
+		return key_none;
+	}
+
+	return key_none;
+}
+
+
+//-------------------------Screen-------------------------
+void clrscr()
+{
+	CONSOLE_SCREEN_BUFFER_INFO	csbiInfo;                  
+	HANDLE	hConsoleOut;
+	COORD	Home = {0,0};
+	DWORD	dummy;
+
+	hConsoleOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	GetConsoleScreenBufferInfo(hConsoleOut,&csbiInfo);
+
+	FillConsoleOutputCharacter(hConsoleOut,' ',csbiInfo.dwSize.X * csbiInfo.dwSize.Y,Home,&dummy);
+	csbiInfo.dwCursorPosition.X = 0;
+	csbiInfo.dwCursorPosition.Y = 0;
+	SetConsoleCursorPosition(hConsoleOut,csbiInfo.dwCursorPosition);
+}
+
+void TextColor (int color)
+{
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE) , color);
+}
+
+void ShowCur(bool CursorVisibility)
+{
+    HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_CURSOR_INFO cursor = {1, CursorVisibility};
+    SetConsoleCursorInfo(handle, &cursor);
+}
+//---------------------------------------------------------------------------------------------------------
+
 
 typedef struct 
 {
@@ -17,6 +73,8 @@ typedef struct
 	char dc[50];
 	char gt[10];
 }Contact;
+
+char sl; //dung de lam menu
 
 void NhapDB(ifstream &filein,Contact &danhba)
 {	
@@ -86,21 +144,31 @@ void copy(Contact danhba1,Contact danhba2)
 
 void LKDB()
 {
-	ifstream filein;
-	filein.open("danhba.dat",ios_base::in);
-	vector<Contact> dsdanhba;
-	NhapDB2(filein,dsdanhba);
-	filein.close();
+	clrscr();
+	while(true)
+    {
+		ifstream filein;
+		filein.open("danhba.dat",ios_base::in);
+		vector<Contact> dsdanhba;
+		NhapDB2(filein,dsdanhba);
+		filein.close();
+		
+		for(int i=0;i<dsdanhba.size();i++)
+		{
+			cout<<"-------------------------------STT: "<<i+1<<"-------------------------------"<<endl;
+			XuatDB(dsdanhba[i]);
+		}
+		 cout<<"Thoat - [Esc]";
+	    sl = _getch();
+	    if(sl == 27) return;
+	    else clrscr();
+    }
 	
-	for(int i=0;i<dsdanhba.size();i++)
-	{
-		cout<<"-------------------------------STT: "<<i+1<<"-------------------------------"<<endl;
-		XuatDB(dsdanhba[i]);
-	}
 }
 
 void themDB()
 {
+	clrscr();
 	ifstream filein;
 	filein.open("danhba.dat",ios_base::in);
 	vector<Contact> dsdanhba;
@@ -128,6 +196,7 @@ void themDB()
 
 void suaDB()
 {
+	clrscr();
 	ifstream filein;
 	filein.open("danhba.dat",ios_base::in);
 	vector<Contact> dsdanhba;
@@ -170,6 +239,7 @@ void suaDB()
 
 void xoaDB()
 {
+	clrscr();
 	ifstream filein;
 	filein.open("danhba.dat",ios_base::in);
 	vector<Contact> dsdanhba;
@@ -201,6 +271,7 @@ void xoaDB()
 
 void TimKiem()
 {
+	clrscr();
 	ifstream filein;
 	filein.open("danhba.dat",ios_base::in);
 	vector<Contact> dsdanhba;
@@ -221,11 +292,82 @@ void TimKiem()
 	}
 }
 
+void menu()
+{
+	clrscr();
+	TextColor(12);
+	cout<<endl<<endl<<endl<<endl<<endl<<endl<<endl;
+	cout<<"                                                    M E N U:    "<<endl<<endl;
+	TextColor(14);
+    cout<<"                                                1: Liet ke danh ba  "<<endl<<endl;
+    cout<<"                                                2: Them danh ba        "<<endl<<endl;
+    cout<<"                                                3: Sua danh ba     "<<endl<<endl;
+    cout<<"                                                4: Xoa danh ba     "<<endl<<endl;
+    cout<<"                                                5: Tim kiem     "<<endl<<endl;
+    cout<<"                                                6: Thoat        "<<endl<<endl;
+    TextColor(7);
+}
+
 int main()
 {
-	LKDB();
-	themDB();
-	suaDB();
-	xoaDB();
-	TimKiem();
+	int d = 0;
+	
+	ShowCur(false); //an con tro
+	while(1)
+	{
+		if(d==0) goto play;	
+		play:
+		menu();
+		sl = _getch();
+		switch(sl)
+		{
+			case '1':
+			{
+				LKDB();
+				goto play;
+				break;
+			}
+			//cac lua chon khac - cac chuc nang khac
+        	case '2': 
+       		{
+            	themDB(); 
+            	goto play;
+           	 	break;
+        	}
+        	case '3':
+        	{
+           	 	suaDB();
+           	 	goto play;
+           	 	break;
+        	}
+        	case '4':
+        	{
+           	 	xoaDB();
+           	 	goto play;
+           	 	break;
+        	}
+        	case '5':
+        	{
+           	 	TimKiem();
+           	 	goto play;
+           	 	break;
+        	}
+        	case '6':
+        	{
+          	  	goto quit; //exits game
+          	  	break;
+        	}
+       		default:
+        	{
+          	  	goto play;
+          	  	break;
+        	}
+    	}
+    	d++; //kiem tra so lan choi
+	}
+	quit:
+	{
+  		cout<<"thoat"; //dung game, dong und dung.
+	}
+	return 0;
 }
