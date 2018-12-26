@@ -111,7 +111,6 @@ void NhapDB2(ifstream &filein, vector<Contact> &ds)
 
 void NhapDB3(Contact &danhba)
 {
-	cout<<"-------------------------------------------------------------"<<endl;
 	cout << "nhap ten: ";
 	cin.getline(danhba.ten,40);
 	cout << "nhap so dien thoai: ";
@@ -191,7 +190,6 @@ void themDB()
 			outfile<<dsdanhba[i].dc<<endl;
 			outfile<<dsdanhba[i].gt;
 	}
-	cout<<"Them thanh cong"<<endl;
 }
 
 void suaDB()
@@ -234,7 +232,6 @@ void suaDB()
 				outfile<<dsdanhba[i].gt;
 		}
 	}
-	cout<<"Sua thanh cong"<<endl;
 }
 
 void xoaDB()
@@ -266,30 +263,36 @@ void xoaDB()
 			outfile<<dsdanhba[i].dc<<endl;
 			outfile<<dsdanhba[i].gt;
 	}
-	cout<<"Xoa thanh cong"<<endl;
 }
 
 void TimKiem()
 {
 	clrscr();
-	ifstream filein;
-	filein.open("danhba.dat",ios_base::in);
-	vector<Contact> dsdanhba;
-	NhapDB2(filein,dsdanhba);
-	filein.close();
-	
-	char temp2[255],*s;
-	printf("Nhap ten can tim kiem: ");
-	gets(temp2);
-	for(int i=0;i<dsdanhba.size();i++)
-	{
-		s=strstr(dsdanhba[i].ten,temp2);
-		if(s!=NULL) 
+	while(true)
+    {
+		ifstream filein;
+		filein.open("danhba.dat",ios_base::in);
+		vector<Contact> dsdanhba;
+		NhapDB2(filein,dsdanhba);
+		filein.close();
+		
+		char temp2[255],*s;
+		printf("Nhap ten can tim kiem: ");
+		gets(temp2);
+		for(int i=0;i<dsdanhba.size();i++)
 		{
-			cout<<"===========================STT: "<<i+1<<"==========================="<<endl;
-			XuatDB(dsdanhba[i]);
+			s=strstr(dsdanhba[i].ten,temp2);
+			if(s!=NULL) 
+			{
+				cout<<"-------------------------------STT: "<<i+1<<"-------------------------------"<<endl;
+				XuatDB(dsdanhba[i]);
+			}
 		}
-	}
+		cout<<"Thoat - [Esc]";
+	    sl = _getch();
+	    if(sl == 27) return;
+	    else clrscr();
+    }	
 }
 
 void menu()
@@ -354,7 +357,7 @@ int main()
         	}
         	case '6':
         	{
-          	  	goto quit; //exits game
+          	  	goto quit; //thoat danh ba
           	  	break;
         	}
        		default:
@@ -363,11 +366,11 @@ int main()
           	  	break;
         	}
     	}
-    	d++; //kiem tra so lan choi
+    	d++; //kiem tra so lan thuc hien cac truc nang
 	}
 	quit:
 	{
-  		cout<<"thoat"; //dung game, dong und dung.
+  		cout<<"thoat"; //dung menu, dong und dung.
 	}
 	return 0;
 }
