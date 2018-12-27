@@ -74,8 +74,6 @@ typedef struct
 	char gt[10];
 }Contact;
 
-char sl; //dung de lam menu
-
 void NhapDB(ifstream &filein,Contact &danhba)
 {	
 	char temp[255];
@@ -144,25 +142,19 @@ void copy(Contact danhba1,Contact danhba2)
 void LKDB()
 {
 	clrscr();
-	while(true)
-    {
-		ifstream filein;
-		filein.open("danhba.dat",ios_base::in);
-		vector<Contact> dsdanhba;
-		NhapDB2(filein,dsdanhba);
-		filein.close();
+
+	ifstream filein;
+	filein.open("danhba.dat",ios_base::in);
+	vector<Contact> dsdanhba;
+	NhapDB2(filein,dsdanhba);
+	filein.close();
 		
-		for(int i=0;i<dsdanhba.size();i++)
-		{
-			cout<<"-------------------------------STT: "<<i+1<<"-------------------------------"<<endl;
-			XuatDB(dsdanhba[i]);
-		}
-		 cout<<"Thoat - [Esc]";
-	    sl = _getch();
-	    if(sl == 27) return;
-	    else clrscr();
-    }
-	
+	for(int i=0;i<dsdanhba.size();i++)
+	{
+		cout<<"-------------------------------STT: "<<i+1<<"-------------------------------"<<endl;
+		XuatDB(dsdanhba[i]);
+	}
+	system("pause");
 }
 
 void themDB()
@@ -268,31 +260,27 @@ void xoaDB()
 void TimKiem()
 {
 	clrscr();
-	while(true)
-    {
-		ifstream filein;
-		filein.open("danhba.dat",ios_base::in);
-		vector<Contact> dsdanhba;
-		NhapDB2(filein,dsdanhba);
-		filein.close();
+	ifstream filein;
+	filein.open("danhba.dat",ios_base::in);
+	vector<Contact> dsdanhba;		NhapDB2(filein,dsdanhba);
+	filein.close();
 		
-		char temp2[255],*s;
-		printf("Nhap ten can tim kiem: ");
-		gets(temp2);
-		for(int i=0;i<dsdanhba.size();i++)
+	char temp2[255],*s;
+	printf("Nhap ten can tim kiem: ");
+	gets(temp2);
+	for(int i=0;i<dsdanhba.size();i++)
+	{
+		s=strstr(dsdanhba[i].ten,temp2);
+		if(s!=NULL) 
 		{
-			s=strstr(dsdanhba[i].ten,temp2);
-			if(s!=NULL) 
-			{
-				cout<<"-------------------------------STT: "<<i+1<<"-------------------------------"<<endl;
-				XuatDB(dsdanhba[i]);
-			}
+			cout<<"-------------------------------STT: "<<i+1<<"-------------------------------"<<endl;
+			XuatDB(dsdanhba[i]);
 		}
-		cout<<"Thoat - [Esc]";
-	    sl = _getch();
-	    if(sl == 27) return;
-	    else clrscr();
-    }	
+		else
+			cout << "khong tim thay" << endl;
+	}
+	system("pause");	
+    	
 }
 
 void menu()
@@ -314,7 +302,7 @@ void menu()
 int main()
 {
 	int d = 0;
-	
+	char sl; //dung de lam menu
 	ShowCur(false); //an con tro
 	while(1)
 	{
