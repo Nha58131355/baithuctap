@@ -182,6 +182,8 @@ void themDB()
 			outfile<<dsdanhba[i].dc<<endl;
 			outfile<<dsdanhba[i].gt;
 	}
+	cout << "them thanh cong" << endl;
+	system("pause");
 }
 
 void suaDB()
@@ -224,6 +226,8 @@ void suaDB()
 				outfile<<dsdanhba[i].gt;
 		}
 	}
+	cout << "sua thanh cong" << endl;
+	system("pause");
 }
 
 void xoaDB()
@@ -255,6 +259,8 @@ void xoaDB()
 			outfile<<dsdanhba[i].dc<<endl;
 			outfile<<dsdanhba[i].gt;
 	}
+	cout << "xoa thanh cong" << endl;
+	system("pause");
 }
 
 void TimKiem()
@@ -276,8 +282,6 @@ void TimKiem()
 			cout<<"-------------------------------STT: "<<i+1<<"-------------------------------"<<endl;
 			XuatDB(dsdanhba[i]);
 		}
-		else
-			cout << "khong tim thay" << endl;
 	}
 	system("pause");	
     	
