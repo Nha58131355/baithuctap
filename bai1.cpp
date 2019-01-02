@@ -1,13 +1,8 @@
 #include <iostream>
 #include <stdio.h>
-#include<conio.h>
+#include <conio.h>
 #include <fstream>
-#include <string>
-#include<vector>
-#include<time.h>
-#include<windows.h>
-#include <cstdlib>
-#include <iomanip>
+#include <vector>
 #include "console.h"
 using namespace std;
 //-------------------------------------------------------------------------------------------------------
@@ -91,6 +86,7 @@ void NhapDB(ifstream &filein,Contact &danhba)
 	
 	filein.getline(temp, 255);
 	strcpy(danhba.dc,temp);
+	fflush(stdin);
 	
 	filein.getline(temp, 255);
 	strcpy(danhba.gt,temp);
@@ -182,7 +178,7 @@ void themDB()
 			outfile<<dsdanhba[i].dc<<endl;
 			outfile<<dsdanhba[i].gt;
 	}
-	cout << "them thanh cong" << endl;
+	cout << "xoa thanh cong" << endl;
 	system("pause");
 }
 
@@ -245,6 +241,7 @@ void xoaDB()
 	cin>>vt;
 	fflush(stdin);
 	vt--;
+	
 	dsdanhba.erase(dsdanhba.begin()+vt);
 	ofstream outfile;
 	   outfile.open("danhba.dat");
@@ -268,7 +265,8 @@ void TimKiem()
 	clrscr();
 	ifstream filein;
 	filein.open("danhba.dat",ios_base::in);
-	vector<Contact> dsdanhba;		NhapDB2(filein,dsdanhba);
+	vector<Contact> dsdanhba;		
+	NhapDB2(filein,dsdanhba);
 	filein.close();
 		
 	char temp2[255],*s;
