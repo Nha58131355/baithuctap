@@ -1,8 +1,6 @@
 #include <iostream>
 #include <string.h>
 #include <fstream>
-#include <windows.h>
-#include <stdlib.h>
 #include <vector>
 #include "console.h"
 #include <conio.h>
@@ -49,11 +47,6 @@ void clrscr()
 	SetConsoleCursorPosition(hConsoleOut,csbiInfo.dwCursorPosition);
 }
 
-void TextColor (int color)
-{
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE) , color);
-}
-
 void ShowCur(bool CursorVisibility)
 {
     HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -73,7 +66,7 @@ vector<CauHoi> dscau;
 
 bool KiemTra (string A,string B)
 {
-	if(A.compare(B)==0)//ham so sanh chuoi string
+	if(A.compare(B)==0)//kiem tra A và B
 	 return true;
 	else
 		return false; 
@@ -87,10 +80,10 @@ void luudiem(string ten, int diem)
 	f.close();
 }
 
-void DocDe1()
+void DocDe(char *dd)
 {
 	clrscr();
-	ifstream f("de1.txt");
+	ifstream f(dd);
 	int sl,diem=0;
 	string s,da,ten;
 	CauHoi bd1;
@@ -105,38 +98,7 @@ void DocDe1()
 		getline(f,s); bd1.da=s;
 		cout << "dap an: ";
 		getline(cin,da);
-		if(KiemTra(bd1.da,da) == true)
-			diem+=2;	
-		dscau.push_back(bd1);
-	}
-	cout << "diem: " << diem << endl;
-	fflush(stdin);
-	cout << "nhap ten: ";
-	fflush(stdin); // xoa bo nho dem
-	getline(cin,ten);
-	luudiem(ten,diem);
-	system("pause");
-}
-
-void DocDe2()
-{
-	clrscr();
-	ifstream f("de2.txt");
-	int sl,diem=0;
-	string s,da,ten;
-	CauHoi bd1;
-	getline(f,s);
-	sl=atoi(s.c_str()); //doi string sang int
-	for(int i=0; i<sl; i++) //xuat cau hoi
-	{
-		getline(f,s); bd1.cauhoi=s; cout <<s<< endl;
-		getline(f,s); bd1.A=s; cout << s << endl;
-		getline(f,s); bd1.B=s; cout << s << endl;
-		getline(f,s); bd1.C=s; cout << s << endl;
-		getline(f,s); bd1.da=s;
-		cout << "dap an: ";
-		getline(cin,da);
-		if(KiemTra(bd1.da,da) == true)
+		if(KiemTra(bd1.da,da) == true) // cong diem
 			diem+=2;	
 		dscau.push_back(bd1);
 	}
@@ -153,33 +115,34 @@ void xemdiem()
 {
 	clrscr();
 	string s;
-		ifstream f3("luudiem.txt");
-		// vong lap
-		getline(f3, s);// lay ten va diem tu file luudiem
-		do
-		{
-			cout << s << endl;
-			getline(f3, s);
-		}while(s.compare("") != 0);// neu dong cuoi cung trong file txt khong co gi het thi ket thuc viet doc
-		f3.close();
-		system("pause");
+	ifstream f3("luudiem.txt");
+	// vong lap
+	getline(f3, s);// lay ten va diem tu file luudiem
+	do
+	{
+		cout << s << endl;
+		getline(f3, s);
+	}while(s.compare("") != 0);// neu dong cuoi cung trong file txt khong co gi het thi ket thuc viet doc
+	f3.close();
+	system("pause");
 }
 
 void menu()
 {
 	clrscr();
 	cout<<endl<<endl<<endl<<endl<<endl<<endl<<endl;
-	cout<<"                                                1: de 1  "<<endl<<endl;
-    cout<<"                                                2: de 2        "<<endl<<endl;
-    cout<<"                                                3: Xem diem     "<<endl<<endl;
-    cout<<"                                                4: Thoat        "<<endl<<endl;
+	cout<<"                                                M E N U:    "<<endl<<endl;
+	cout<<"                                              1: de 1"<<endl<<endl;
+    cout<<"                                              2: de 2"<<endl<<endl;
+    cout<<"                                              3: Xem diem"<<endl<<endl;
+    cout<<"                                              4: Thoat"<<endl<<endl;
 }
 int main()
 {
-	int d=0;
-	char sl;
-	ShowCur(false);
-	while(1)
+	int d=0; //dem
+	char sl; //kiem tra nhap tu ban phim
+	ShowCur(false);//an con tro
+	while(1) //vong lap menu
 	{
 		if(d==0) goto play;	
 		play:
@@ -189,14 +152,14 @@ int main()
 		{
 			case '1':
 			{
-				DocDe1();
+				DocDe("de1.txt");
 				goto play;
 				break;
 			}
 			//cac lua chon khac - cac chuc nang khac
         	case '2': 
        		{
-            	DocDe2(); 
+            	DocDe("de2.txt"); 
             	goto play;
            	 	break;
         	}
